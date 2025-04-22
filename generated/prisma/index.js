@@ -113,22 +113,14 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
+exports.Prisma.QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
+};
+
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
-};
-
-exports.Prisma.UserOrderByRelevanceFieldEnum = {
-  id: 'id',
-  name: 'name',
-  email: 'email'
-};
-
-exports.Prisma.PostOrderByRelevanceFieldEnum = {
-  id: 'id',
-  title: 'title',
-  content: 'content',
-  authorId: 'authorId'
 };
 
 
@@ -147,7 +139,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/home/records/multitude/nest/test-repo/generated/prisma",
+      "value": "/home/muhammadali/devs/nest/test-repo/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -161,11 +153,11 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/home/records/multitude/nest/test-repo/prisma/schema.prisma",
+    "sourceFilePath": "/home/muhammadali/devs/nest/test-repo/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": "../../.env",
+    "rootEnvPath": null,
     "schemaEnvPath": "../../.env"
   },
   "relativePath": "../../prisma",
@@ -174,17 +166,17 @@ const config = {
   "datasourceNames": [
     "db"
   ],
-  "activeProvider": "mysql",
+  "activeProvider": "postgresql",
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": "mysql://root:asm82@localhost:3306/mydb"
+        "value": "postgresql://neondb_owner:npg_Nwp2HXI7EfPq@ep-black-darkness-a4l6da3j-pooler.us-east-1.aws.neon.tech/neondb?sslmode=require"
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"mysql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id        String   @id @default(cuid())\n  name      String?\n  email     String?  @unique\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  Post      Post[]\n}\n\nmodel Post {\n  id        String   @id @default(cuid())\n  title     String\n  content   String?\n  published Boolean  @default(false)\n  authorId  String?\n  author    User?    @relation(fields: [authorId], references: [id])\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}\n",
-  "inlineSchemaHash": "1b8f0c80f384df21bde6c64526ce9ce67dbce023327425cdd721d95a9e4a68b9",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id        String   @id @default(cuid())\n  name      String?\n  email     String?  @unique\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  Post      Post[]\n}\n\nmodel Post {\n  id        String   @id @default(cuid())\n  title     String\n  content   String?\n  published Boolean  @default(false)\n  authorId  String?\n  author    User?    @relation(fields: [authorId], references: [id])\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}\n",
+  "inlineSchemaHash": "df033f0030d793be4a293d4438160181256d2e01683e8cc7e1f7854f463446a2",
   "copyEngine": true
 }
 
