@@ -2066,12 +2066,22 @@ export namespace Prisma {
 
   export type AggregatePost = {
     _count: PostCountAggregateOutputType | null
+    _avg: PostAvgAggregateOutputType | null
+    _sum: PostSumAggregateOutputType | null
     _min: PostMinAggregateOutputType | null
     _max: PostMaxAggregateOutputType | null
   }
 
+  export type PostAvgAggregateOutputType = {
+    id: number | null
+  }
+
+  export type PostSumAggregateOutputType = {
+    id: number | null
+  }
+
   export type PostMinAggregateOutputType = {
-    id: string | null
+    id: number | null
     title: string | null
     content: string | null
     published: boolean | null
@@ -2081,7 +2091,7 @@ export namespace Prisma {
   }
 
   export type PostMaxAggregateOutputType = {
-    id: string | null
+    id: number | null
     title: string | null
     content: string | null
     published: boolean | null
@@ -2101,6 +2111,14 @@ export namespace Prisma {
     _all: number
   }
 
+
+  export type PostAvgAggregateInputType = {
+    id?: true
+  }
+
+  export type PostSumAggregateInputType = {
+    id?: true
+  }
 
   export type PostMinAggregateInputType = {
     id?: true
@@ -2171,6 +2189,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: PostAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PostSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: PostMinAggregateInputType
@@ -2201,12 +2231,14 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: PostCountAggregateInputType | true
+    _avg?: PostAvgAggregateInputType
+    _sum?: PostSumAggregateInputType
     _min?: PostMinAggregateInputType
     _max?: PostMaxAggregateInputType
   }
 
   export type PostGroupByOutputType = {
-    id: string
+    id: number
     title: string
     content: string | null
     published: boolean
@@ -2214,6 +2246,8 @@ export namespace Prisma {
     createdAt: Date
     updatedAt: Date
     _count: PostCountAggregateOutputType | null
+    _avg: PostAvgAggregateOutputType | null
+    _sum: PostSumAggregateOutputType | null
     _min: PostMinAggregateOutputType | null
     _max: PostMaxAggregateOutputType | null
   }
@@ -2292,7 +2326,7 @@ export namespace Prisma {
       author: Prisma.$UserPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
-      id: string
+      id: number
       title: string
       content: string | null
       published: boolean
@@ -2723,7 +2757,7 @@ export namespace Prisma {
    * Fields of the Post model
    */
   interface PostFieldRefs {
-    readonly id: FieldRef<"Post", 'String'>
+    readonly id: FieldRef<"Post", 'Int'>
     readonly title: FieldRef<"Post", 'String'>
     readonly content: FieldRef<"Post", 'String'>
     readonly published: FieldRef<"Post", 'Boolean'>
@@ -3259,13 +3293,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Boolean'
-   */
-  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
-    
-
-
-  /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -3276,6 +3303,27 @@ export namespace Prisma {
    * Reference to a field of type 'Int[]'
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
+   * Reference to a field of type 'Float'
+   */
+  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+  /**
+   * Reference to a field of type 'Float[]'
+   */
+  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
   /**
    * Deep Input Types
@@ -3341,7 +3389,7 @@ export namespace Prisma {
     AND?: PostWhereInput | PostWhereInput[]
     OR?: PostWhereInput[]
     NOT?: PostWhereInput | PostWhereInput[]
-    id?: StringFilter<"Post"> | string
+    id?: IntFilter<"Post"> | number
     title?: StringFilter<"Post"> | string
     content?: StringNullableFilter<"Post"> | string | null
     published?: BoolFilter<"Post"> | boolean
@@ -3363,7 +3411,7 @@ export namespace Prisma {
   }
 
   export type PostWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
+    id?: number
     AND?: PostWhereInput | PostWhereInput[]
     OR?: PostWhereInput[]
     NOT?: PostWhereInput | PostWhereInput[]
@@ -3385,15 +3433,17 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: PostCountOrderByAggregateInput
+    _avg?: PostAvgOrderByAggregateInput
     _max?: PostMaxOrderByAggregateInput
     _min?: PostMinOrderByAggregateInput
+    _sum?: PostSumOrderByAggregateInput
   }
 
   export type PostScalarWhereWithAggregatesInput = {
     AND?: PostScalarWhereWithAggregatesInput | PostScalarWhereWithAggregatesInput[]
     OR?: PostScalarWhereWithAggregatesInput[]
     NOT?: PostScalarWhereWithAggregatesInput | PostScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"Post"> | string
+    id?: IntWithAggregatesFilter<"Post"> | number
     title?: StringWithAggregatesFilter<"Post"> | string
     content?: StringNullableWithAggregatesFilter<"Post"> | string | null
     published?: BoolWithAggregatesFilter<"Post"> | boolean
@@ -3463,7 +3513,6 @@ export namespace Prisma {
   }
 
   export type PostCreateInput = {
-    id?: string
     title: string
     content?: string | null
     published?: boolean
@@ -3473,7 +3522,7 @@ export namespace Prisma {
   }
 
   export type PostUncheckedCreateInput = {
-    id?: string
+    id?: number
     title: string
     content?: string | null
     published?: boolean
@@ -3483,7 +3532,6 @@ export namespace Prisma {
   }
 
   export type PostUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     content?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
@@ -3493,7 +3541,7 @@ export namespace Prisma {
   }
 
   export type PostUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
+    id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     content?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
@@ -3503,7 +3551,7 @@ export namespace Prisma {
   }
 
   export type PostCreateManyInput = {
-    id?: string
+    id?: number
     title: string
     content?: string | null
     published?: boolean
@@ -3513,7 +3561,6 @@ export namespace Prisma {
   }
 
   export type PostUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     content?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
@@ -3522,7 +3569,7 @@ export namespace Prisma {
   }
 
   export type PostUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
+    id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     content?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
@@ -3661,6 +3708,17 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
   export type BoolFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolFilter<$PrismaModel> | boolean
@@ -3681,6 +3739,10 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type PostAvgOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
   export type PostMaxOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
@@ -3699,6 +3761,26 @@ export namespace Prisma {
     authorId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type PostSumOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type BoolWithAggregatesFilter<$PrismaModel = never> = {
@@ -3781,6 +3863,14 @@ export namespace Prisma {
     delete?: UserWhereInput | boolean
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPostInput, UserUpdateWithoutPostInput>, UserUncheckedUpdateWithoutPostInput>
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -3897,6 +3987,33 @@ export namespace Prisma {
     not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
+  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
   export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
@@ -3906,7 +4023,6 @@ export namespace Prisma {
   }
 
   export type PostCreateWithoutAuthorInput = {
-    id?: string
     title: string
     content?: string | null
     published?: boolean
@@ -3915,7 +4031,7 @@ export namespace Prisma {
   }
 
   export type PostUncheckedCreateWithoutAuthorInput = {
-    id?: string
+    id?: number
     title: string
     content?: string | null
     published?: boolean
@@ -3953,7 +4069,7 @@ export namespace Prisma {
     AND?: PostScalarWhereInput | PostScalarWhereInput[]
     OR?: PostScalarWhereInput[]
     NOT?: PostScalarWhereInput | PostScalarWhereInput[]
-    id?: StringFilter<"Post"> | string
+    id?: IntFilter<"Post"> | number
     title?: StringFilter<"Post"> | string
     content?: StringNullableFilter<"Post"> | string | null
     published?: BoolFilter<"Post"> | boolean
@@ -4011,7 +4127,7 @@ export namespace Prisma {
   }
 
   export type PostCreateManyAuthorInput = {
-    id?: string
+    id?: number
     title: string
     content?: string | null
     published?: boolean
@@ -4020,7 +4136,6 @@ export namespace Prisma {
   }
 
   export type PostUpdateWithoutAuthorInput = {
-    id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     content?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
@@ -4029,7 +4144,7 @@ export namespace Prisma {
   }
 
   export type PostUncheckedUpdateWithoutAuthorInput = {
-    id?: StringFieldUpdateOperationsInput | string
+    id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     content?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
@@ -4038,7 +4153,7 @@ export namespace Prisma {
   }
 
   export type PostUncheckedUpdateManyWithoutAuthorInput = {
-    id?: StringFieldUpdateOperationsInput | string
+    id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     content?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean

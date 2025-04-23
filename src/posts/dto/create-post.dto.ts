@@ -1,1 +1,8 @@
-export class CreatePostDto {}
+import { IsInt } from "class-validator";
+
+export class CreatePostDto {
+    @IsInt()
+    id: number;
+
+    
+}
