@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
   output   = "../generated/prisma"
@@ -15,19 +9,58 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  name      String?
-  email     String?  @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  Post      Post[]
+  id           String   @id @default(cuid())
+  name         String?
+  email        String   @unique
+  profile      String?
+  banner       String?
+  verification Boolean  @default(false)
+  bio          String?  @default("")
+  
+  // Relations
+  posts        Post[]
+  followers    Follower[] @relation("FollowedBy")
+  following    Follower[] @relation("Following")
+  socials      Social[] // optional model
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model Post {
-  id        Int      @id @default(autoincrement())
-  title     String
-  authorId  String?
-  author    User?    @relation(fields: [authorId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         Int      @id @default(autoincrement())
+  title      String
+  desc    String?
+  imageUrl   String?
+  authorId   String
+  author     User     @relation(fields: [authorId], references: [id])
+  
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Follower {
+  id         String   @id @default(cuid())
+  followerId String
+  followingId String
+
+  follower   User     @relation("Following", fields: [followerId], references: [id])
+  following  User     @relation("FollowedBy", fields: [followingId], references: [id])
+  
+  createdAt  DateTime @default(now())
+
+  @@unique([followerId, followingId]) // prevent duplicates
+}
+
+model Social {
+  id       String  @id @default(cuid())
+  userId   String
+  platform String  // e.g., 'twitter', 'github'
+  url      String
+
+  user     User    @relation(fields: [userId], references: [id])
+}
+
+model Image {
+  id Int @id @default(autoincrement())
 }
