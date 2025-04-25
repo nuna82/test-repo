@@ -9,56 +9,49 @@ datasource db {
 }
 
 model User {
-  id           String  @id @default(cuid())
+  id           String     @id @default(cuid())
   name         String?
-  email        String  @unique
+  email        String     @unique
   profile      String?
   banner       String?
-  verification Boolean @default(false)
-  bio          String? @default("")
-
-  // Relations
-  posts     Post[]
-  followers Follower[] @relation("FollowedBy")
-  following Follower[] @relation("Following")
-  socials   Social[] // optional model
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  verification Boolean    @default(false)
+  bio          String?    @default("")
+  posts        Post[]
+  followers    Follower[] @relation("FollowedBy")
+  following    Follower[] @relation("Following")
+  socials      Social[]
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
 }
 
 model Post {
-  id       Int     @id @default(autoincrement())
-  title    String
-  desc     String?
-  imageUrl String?
-  authorId String
-  author   User    @relation(fields: [authorId], references: [id])
-
+  id        Int      @id @default(autoincrement())
+  title     String
+  desc      String?
+  imageUrl  String?
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Follower {
-  id          String @id @default(cuid())
+  id          String   @id @default(cuid())
   followerId  String
   followingId String
+  follower    User     @relation("Following", fields: [followerId], references: [id])
+  following   User     @relation("FollowedBy", fields: [followingId], references: [id])
+  createdAt   DateTime @default(now())
 
-  follower  User @relation("Following", fields: [followerId], references: [id])
-  following User @relation("FollowedBy", fields: [followingId], references: [id])
-
-  createdAt DateTime @default(now())
-
-  @@unique([followerId, followingId]) // prevent duplicates
+  @@unique([followerId, followingId])
 }
 
 model Social {
   id       String @id @default(cuid())
   userId   String
-  platform String // e.g., 'twitter', 'github'
+  platform String
   url      String
-
-  user User @relation(fields: [userId], references: [id])
+  user     User   @relation(fields: [userId], references: [id])
 }
 
 model Image {
